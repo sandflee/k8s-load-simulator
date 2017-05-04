@@ -25,6 +25,7 @@ import (
 func DoRun(cmd *cobra.Command, args []string) {
 	//defer glog.Flush()
 
+	//glog.Info("run k8s simulator")
 	for i := 0; i < conf.SimConfig.NodeNum; i++ {
 		c, err := node.NewConfig(conf.SimConfig, i)
 		if err != nil {
@@ -32,16 +33,16 @@ func DoRun(cmd *cobra.Command, args []string) {
 			return
 		}
 		node := node.Node{
-			Conf: *c,
+			Config: *c,
 		}
 		go node.Run()
 	}
 
-	timer := time.NewTicker(time.Second)
+	timer := time.NewTicker(time.Duration(5) * time.Second)
 	for {
 		select {
 		case <-timer.C:
-			fmt.Printf("timer comes")
+			fmt.Printf("ping")
 		}
 	}
 }
