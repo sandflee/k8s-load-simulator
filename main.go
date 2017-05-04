@@ -15,14 +15,15 @@
 package main
 
 import (
-	"fmt"
-	"github.com/sandflee/k8s-load-simulator/pkg/cmd"
-	"os"
+	"flag"
+	"github.com/sandflee/k8s-load-simulator/pkg/simulator"
+	"github.com/golang/glog"
+	_ "github.com/sandflee/k8s-load-simulator/pkg/cmd"
 )
 
 func main() {
-	if err := cmd.RootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(-1)
-	}
+	flag.Parse()
+	defer glog.Flush()
+
+	simulator.Run()
 }

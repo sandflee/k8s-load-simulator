@@ -1,6 +1,5 @@
 package: github.com/sandflee/k8s-load-simulator
 import:
-- package: github.com/spf13/cobra
 - package: k8s.io/client-go
   version: 3a5b96cfd3d3ff1d53d979b4297c4f3b869aab09
   subpackages:

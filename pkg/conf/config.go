@@ -11,4 +11,5 @@ type Config struct {
 	NodeCores   int
 	NodeMem     int
 	NodeMaxPods int
+	UpdateFrequency int
 }

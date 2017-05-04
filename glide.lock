@@ -1,12 +1,8 @@
-hash: 1f1b98a8ee1c86299bfe17f4a3c1eee5a3270a66631905816d7e202bf345f1bf
-updated: 2017-05-04T15:42:20.828071472+08:00
+hash: b8ebc88bbf97b5d78e94548af2854a582b51c39512c895a8adeafeb63f475104
+updated: 2017-05-04T18:33:34.552381423+08:00
 imports:
 - name: github.com/blang/semver
   version: 4a1e882c79dcf4ec00d2e29fac74b9c8938d5052
-- name: github.com/cpuguy83/go-md2man
-  version: a65d4d2de4d5f7c74868dfa9b202a3c8be315aaa
-  subpackages:
-  - md2man
 - name: github.com/davecgh/go-spew
   version: 346938d642f2ec3594ed81d874461961cd0faa76
   subpackages:
@@ -34,20 +30,12 @@ imports:
   version: 44d81051d367757e1c7c6a5a86423ece9afcf63c
 - name: github.com/imdario/mergo
   version: d806ba8c21777d504a2090a2ca4913c750dd3a33
-- name: github.com/inconshreveable/mousetrap
-  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/juju/ratelimit
   version: acf38b000a03e4ab89e40f20f1e548f4e6ac7f72
 - name: github.com/opencontainers/go-digest
   version: aa2ec055abd10d26d539eb630a92241b781ce4bc
 - name: github.com/pborman/uuid
   version: 1b00554d822231195d1babd97ff4a781231955c9
-- name: github.com/russross/blackfriday
-  version: b253417e1cb644d645a0a3bb1fa5034c8030127c
-- name: github.com/shurcooL/sanitized_anchor_name
-  version: 79c90efaf01eddc01945af5bc1797859189b830b
-- name: github.com/spf13/cobra
-  version: 1c44ec8d3f1552cac48999f9306da23c4d8a288b
 - name: github.com/spf13/pflag
   version: 08b1a584251b5b62f458943640fc8ebd4d50aaa5
 - name: github.com/ugorji/go

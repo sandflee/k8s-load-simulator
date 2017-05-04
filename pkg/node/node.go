@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"github.com/golang/glog"
 )
 
 type Config struct {
@@ -71,6 +72,10 @@ func NewConfig(conf conf.Config, no int) (*Config, error) {
 	nodeConfig := Config{
 		client: client,
 		nodeIp: hostIp,
+		updateFrequency: conf.UpdateFrequency,
+		cores: conf.NodeCores,
+		memory: conf.NodeMem,
+		maxPods: conf.NodeMaxPods,
 	}
 	return &nodeConfig, nil
 }
@@ -148,7 +153,7 @@ func (n *Node) registerToApiserver() bool {
 	for i := 0; i < 5; i++ {
 		if _, err := n.client.Core().Nodes().Create(node); err != nil {
 			if !errors.IsAlreadyExists(err) {
-				fmt.Printf("create node failed,", err)
+				glog.Warningf("node:%s,create node failed,err:%v", n.nodeIp, err)
 				time.Sleep(time.Second)
 			} else {
 				n.client.Core().Nodes().Delete(n.nodeIp, nil)
@@ -162,27 +167,36 @@ func (n *Node) registerToApiserver() bool {
 	return succ
 }
 
-func (n *Node) heartBeat() {
+func (n *Node) heartBeat() bool {
 	for i := 0; i < 5; i++ {
 		node, err := n.client.Core().Nodes().Get(n.nodeIp)
 		if err != nil {
+			glog.Warningf("node:%s, get node info failed, err:%v", n.nodeIp, err)
 			time.Sleep(time.Second)
 			continue
 		}
 		n.setNodeStatus(node)
 		if _, err := n.client.Core().Nodes().Update(node); err != nil {
+			glog.Warningf("node:%s, update node info failed, try again, err:%v", n.nodeIp, err)
 			time.Sleep(time.Second)
 			continue
 		}
-		break
+		return true
 	}
+
+	glog.Warningf("node:%s,after retry,update node failed,", n.nodeIp)
+	return false
 }
 
 func (n *Node) syncNodeStatus() {
-	n.registerToApiserver()
+	succ := n.registerToApiserver()
+	if !succ {
+		glog.Fatal("node:%s,register to apiserver failed, err:%v", n.nodeIp)
+	}
 
 	for {
-		n.heartBeat()
+		succ = n.heartBeat()
+		glog.V(2).Infof("node:%s, heartbeart, succ:%t", n.nodeIp, succ)
 		time.Sleep(time.Duration(n.updateFrequency) * time.Second)
 	}
 }

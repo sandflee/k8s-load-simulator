@@ -15,22 +15,18 @@
 package simulator
 
 import (
-	"fmt"
 	"github.com/sandflee/k8s-load-simulator/pkg/conf"
 	"github.com/sandflee/k8s-load-simulator/pkg/node"
-	"github.com/spf13/cobra"
 	"time"
+	"github.com/golang/glog"
 )
 
-func DoRun(cmd *cobra.Command, args []string) {
-	//defer glog.Flush()
-
-	//glog.Info("run k8s simulator")
+func Run() {
+	glog.Info("run k8s simulator")
 	for i := 0; i < conf.SimConfig.NodeNum; i++ {
 		c, err := node.NewConfig(conf.SimConfig, i)
 		if err != nil {
-			fmt.Printf("create config failed,%v\n", err)
-			return
+			glog.Fatal("create config failed,%v\n", err)
 		}
 		node := node.Node{
 			Config: *c,
@@ -42,7 +38,7 @@ func DoRun(cmd *cobra.Command, args []string) {
 	for {
 		select {
 		case <-timer.C:
-			fmt.Printf("ping")
+			glog.Info("ping")
 		}
 	}
 }
