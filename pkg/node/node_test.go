@@ -3,8 +3,8 @@ package node
 import "testing"
 
 type testHostIp struct {
-	begin string
-	no int
+	begin    string
+	no       int
 	excepted string
 }
 
@@ -33,7 +33,7 @@ func TestGenerateHostIp(t *testing.T) {
 		},
 		{
 			"127.0.0.1",
-			256*256,
+			256 * 256,
 			"127.1.0.1",
 		},
 		{
@@ -43,7 +43,7 @@ func TestGenerateHostIp(t *testing.T) {
 		},
 	}
 
-	for _,test := range tests {
+	for _, test := range tests {
 		ip := generateNodeIp(test.begin, test.no)
 		if ip != test.excepted {
 			t.Fatalf("test:%+v,real:%s", test, ip)

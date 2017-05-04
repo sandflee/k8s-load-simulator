@@ -15,11 +15,10 @@
 package main
 
 import (
-	"github.com/sandflee/k8s-load-simulator/pkg/cmd"
 	"fmt"
+	"github.com/sandflee/k8s-load-simulator/pkg/cmd"
 	"os"
 )
-
 
 func main() {
 	if err := cmd.RootCmd.Execute(); err != nil {

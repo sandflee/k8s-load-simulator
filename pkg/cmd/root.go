@@ -1,16 +1,16 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/sandflee/k8s-load-simulator/pkg/simulator"
 	"github.com/sandflee/k8s-load-simulator/pkg/conf"
+	"github.com/sandflee/k8s-load-simulator/pkg/simulator"
+	"github.com/spf13/cobra"
 )
 
 // This represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "k8s-load-simulator",
 	Short: "A low-level load simulater tool for k8s",
-	Run: simulator.DoRun,
+	Run:   simulator.DoRun,
 }
 
 func init() {

@@ -1,8 +1,6 @@
 package node
 
-
 type Pod struct {
-
 }
 
 func (p *Pod) run() {

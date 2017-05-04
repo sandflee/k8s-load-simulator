@@ -6,6 +6,6 @@ var (
 
 type Config struct {
 	Apiserver string
-	NodeNum int
-	Ip string
+	NodeNum   int
+	Ip        string
 }

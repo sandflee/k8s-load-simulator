@@ -15,14 +15,12 @@
 package simulator
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/sandflee/k8s-load-simulator/pkg/node"
-	"time"
 	"fmt"
 	"github.com/sandflee/k8s-load-simulator/pkg/conf"
+	"github.com/sandflee/k8s-load-simulator/pkg/node"
+	"github.com/spf13/cobra"
+	"time"
 )
-
-
 
 func DoRun(cmd *cobra.Command, args []string) {
 	//defer glog.Flush()
@@ -42,9 +40,8 @@ func DoRun(cmd *cobra.Command, args []string) {
 	timer := time.NewTicker(time.Second)
 	for {
 		select {
-			case <-timer.C:
-				fmt.Printf("timer comes")
+		case <-timer.C:
+			fmt.Printf("timer comes")
 		}
 	}
 }
-
