@@ -19,11 +19,22 @@ import (
 	"github.com/sandflee/k8s-load-simulator/pkg/simulator"
 	"github.com/golang/glog"
 	_ "github.com/sandflee/k8s-load-simulator/pkg/cmd"
+	"net/http"
+	_ "net/http/pprof"
+	"github.com/sandflee/k8s-load-simulator/pkg/conf"
+	"strconv"
 )
 
 func main() {
 	flag.Parse()
 	defer glog.Flush()
 
-	simulator.Run()
+	go simulator.Run()
+
+	glog.Infof("config:%+v", conf.SimConfig)
+
+	err := http.ListenAndServe("0.0.0.0:" + strconv.Itoa(conf.SimConfig.PprofPort), nil)
+	if err != nil {
+		glog.Fatal("http listen failed,", err)
+	}
 }

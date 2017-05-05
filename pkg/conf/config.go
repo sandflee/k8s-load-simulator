@@ -12,4 +12,5 @@ type Config struct {
 	NodeMem     int
 	NodeMaxPods int
 	UpdateFrequency int
+	PprofPort int
 }

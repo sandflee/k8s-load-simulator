@@ -86,7 +86,7 @@ func (n *Node) setNodeCapcity(node *api.Node) error {
 			int64(n.cores*1000),
 			resource.DecimalSI),
 		api.ResourceMemory: *resource.NewQuantity(
-			int64(n.memory),
+			int64(n.memory*1024*1024),
 			resource.BinarySI),
 		api.ResourcePods: *resource.NewQuantity(
 			int64(n.maxPods),
@@ -176,11 +176,12 @@ func (n *Node) heartBeat() bool {
 			continue
 		}
 		n.setNodeStatus(node)
-		if _, err := n.client.Core().Nodes().Update(node); err != nil {
+		if _, err := n.client.Core().Nodes().UpdateStatus(node); err != nil {
 			glog.Warningf("node:%s, update node info failed, try again, err:%v", n.nodeIp, err)
 			time.Sleep(time.Second)
 			continue
 		}
+
 		return true
 	}
 
