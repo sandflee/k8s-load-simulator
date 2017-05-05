@@ -203,7 +203,20 @@ func (n *Node) syncNodeStatus() {
 }
 
 func (n *Node) Run() {
-	podUpdates := make(chan interface{})
-	NewSourceApiserver(n.client, n.nodeIp, podUpdates)
+
+	sources := make(chan PodUpdate)
+	go NewSourceApiserver(n.client, n.nodeIp, sources)
+
+	updates := make(chan PodUpdate)
+	statusManager := NewPodStatusManager(n.client, updates)
+	go statusManager.Run()
+
 	go n.syncNodeStatus()
+
+	for {
+		select {
+		case pod := <- sources:
+			updates <- pod
+		}
+	}
 }
