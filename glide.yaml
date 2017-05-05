@@ -1,11 +1,7 @@
 package: github.com/sandflee/k8s-load-simulator
 import:
 - package: k8s.io/client-go
-  version: 3a5b96cfd3d3ff1d53d979b4297c4f3b869aab09
-  subpackages:
-  - 1.4/kubernetes
-  - 1.4/pkg/api
-  - 1.4/tools/clientcmd
+  version: 1195e3a8ee1a529d53eed7c624527a68555ddf1f
 - package: github.com/emicklei/go-restful
   version: 89ef8af493ab468a45a42bb0d89a06fccdd2fb22
   subpackages:

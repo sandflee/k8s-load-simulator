@@ -3,12 +3,12 @@ package node
 import (
 	"fmt"
 	"github.com/sandflee/k8s-load-simulator/pkg/conf"
-	"k8s.io/client-go/1.4/kubernetes"
-	"k8s.io/client-go/1.4/pkg/api/errors"
-	"k8s.io/client-go/1.4/pkg/api/resource"
-	"k8s.io/client-go/1.4/pkg/api/unversioned"
-	api "k8s.io/client-go/1.4/pkg/api/v1"
-	"k8s.io/client-go/1.4/tools/clientcmd"
+	"k8s.io/client-go/1.5/kubernetes"
+	"k8s.io/client-go/1.5/pkg/api/errors"
+	"k8s.io/client-go/1.5/pkg/api/resource"
+	"k8s.io/client-go/1.5/pkg/api/unversioned"
+	api "k8s.io/client-go/1.5/pkg/api/v1"
+	"k8s.io/client-go/1.5/tools/clientcmd"
 	"net"
 	"runtime"
 	"strconv"
@@ -203,5 +203,7 @@ func (n *Node) syncNodeStatus() {
 }
 
 func (n *Node) Run() {
+	podUpdates := make(chan interface{})
+	NewSourceApiserver(n.client, n.nodeIp, podUpdates)
 	go n.syncNodeStatus()
 }
