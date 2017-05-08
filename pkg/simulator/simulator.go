@@ -34,6 +34,12 @@ func Run() {
 		go node.Run()
 	}
 
+	cacher, err := node.NewNodeCacher(conf.SimConfig.Apiserver)
+	if err != nil {
+		glog.Fatal("create node cacher failed", err)
+	}
+	go cacher.Run()
+
 	timer := time.NewTicker(time.Duration(5) * time.Second)
 	for {
 		select {

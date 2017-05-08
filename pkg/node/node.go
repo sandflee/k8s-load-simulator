@@ -192,7 +192,7 @@ func (n *Node) heartBeat() bool {
 func (n *Node) syncNodeStatus() {
 	succ := n.registerToApiserver()
 	if !succ {
-		glog.Fatal("node:%s,register to apiserver failed, err:%v", n.nodeIp)
+		glog.Fatalf("node:%s,register to apiserver failed, err:%v", n.nodeIp)
 	}
 
 	for {

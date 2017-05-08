@@ -23,7 +23,6 @@ type PodUpdate struct {
 	old *v1.Pod
 }
 
-
 func NewSourceApiserver(c *kubernetes.Clientset, nodeName string, updates chan<- PodUpdate) {
 	lw := cache.NewListWatchFromClient(c.CoreClient, "pods", api.NamespaceAll, fields.OneTermEqualSelector(api.PodHostField, nodeName))
 	newSourceApiserverFromLW(lw, updates)
