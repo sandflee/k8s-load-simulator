@@ -45,7 +45,7 @@ func newSourceApiserverFromLW(lw cache.ListerWatcher, updates chan<- PodUpdate) 
 			if pod, ok := obj.(*v1.Pod); ok {
 				updates <- PodUpdate{Delete, pod, nil}
 			} else {
-				glog.Warning("recv:%+v", obj)
+				glog.Warningf("pod delete handler, recv:%+v", obj)
 			}
 		},
 	})

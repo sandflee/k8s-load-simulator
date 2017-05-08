@@ -81,8 +81,11 @@ func NewNodeCacher(apiserver string) (*NodeCacher, error) {
 				cacher.updateNodeInfo(node, false)
 			},
 			DeleteFunc: func(obj interface{}) {
-				node := obj.(*api.Node)
-				cacher.updateNodeInfo(node, true)
+				if node, ok := obj.(*api.Node); ok {
+					cacher.updateNodeInfo(node, true)
+				} else {
+					glog.Warningf("node delete handler, recv:%v",obj)
+				}
 			},
 		},
 	)

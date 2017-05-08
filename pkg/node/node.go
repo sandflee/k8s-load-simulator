@@ -15,6 +15,7 @@ import (
 	"strings"
 	"time"
 	"github.com/golang/glog"
+	"k8s.io/client-go/1.5/pkg/util/wait"
 )
 
 type Config struct {
@@ -29,6 +30,14 @@ type Config struct {
 type Node struct {
 	Config
 	pods map[string]api.Pod
+	isRegistered bool
+}
+
+func NewNode(conf *Config) *Node {
+	node := &Node{}
+	node.Config = *conf
+	node.isRegistered = false
+	return node
 }
 
 func generateNodeIp(ipStr string, no int) string {
@@ -181,7 +190,6 @@ func (n *Node) heartBeat() bool {
 			time.Sleep(time.Second)
 			continue
 		}
-
 		return true
 	}
 
@@ -190,16 +198,17 @@ func (n *Node) heartBeat() bool {
 }
 
 func (n *Node) syncNodeStatus() {
-	succ := n.registerToApiserver()
-	if !succ {
-		glog.Fatalf("node:%s,register to apiserver failed, err:%v", n.nodeIp)
+	if !n.isRegistered {
+		if succ := n.registerToApiserver(); !succ {
+			glog.Warning("node:%s,register to apiserver failed", n.nodeIp)
+		} else {
+			n.isRegistered = true
+		}
+		return
 	}
 
-	for {
-		succ = n.heartBeat()
-		glog.V(2).Infof("node:%s, heartbeart, succ:%t", n.nodeIp, succ)
-		time.Sleep(time.Duration(n.updateFrequency) * time.Second)
-	}
+	succ := n.heartBeat()
+	glog.V(3).Infof("node:%s, heartbeart, succ:%t", n.nodeIp, succ)
 }
 
 func (n *Node) Run() {
@@ -211,7 +220,7 @@ func (n *Node) Run() {
 	statusManager := NewPodStatusManager(n.client, updates)
 	go statusManager.Run()
 
-	go n.syncNodeStatus()
+	go wait.Until(n.syncNodeStatus, time.Duration(n.updateFrequency)*time.Second, wait.NeverStop)
 
 	for {
 		select {

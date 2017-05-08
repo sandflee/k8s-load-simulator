@@ -28,9 +28,8 @@ func Run() {
 		if err != nil {
 			glog.Fatal("create config failed,%v\n", err)
 		}
-		node := node.Node{
-			Config: *c,
-		}
+
+		node := node.NewNode(c)
 		go node.Run()
 	}
 
