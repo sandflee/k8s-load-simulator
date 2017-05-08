@@ -23,15 +23,18 @@ import (
 	_ "net/http/pprof"
 	"github.com/sandflee/k8s-load-simulator/pkg/conf"
 	"strconv"
+	"math/rand"
+	"time"
 )
 
 func main() {
 	flag.Parse()
 	defer glog.Flush()
 
-	go simulator.Run()
-
+	rand.Seed(time.Now().Unix())
 	glog.Infof("config:%+v", conf.SimConfig)
+
+	go simulator.Run()
 
 	err := http.ListenAndServe("0.0.0.0:" + strconv.Itoa(conf.SimConfig.PprofPort), nil)
 	if err != nil {

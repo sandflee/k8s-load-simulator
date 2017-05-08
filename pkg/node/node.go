@@ -16,6 +16,7 @@ import (
 	"time"
 	"github.com/golang/glog"
 	"k8s.io/client-go/1.5/pkg/util/wait"
+	"math/rand"
 )
 
 type Config struct {
@@ -198,6 +199,7 @@ func (n *Node) heartBeat() bool {
 }
 
 func (n *Node) syncNodeStatus() {
+
 	if !n.isRegistered {
 		if succ := n.registerToApiserver(); !succ {
 			glog.Warning("node:%s,register to apiserver failed", n.nodeIp)
@@ -220,6 +222,9 @@ func (n *Node) Run() {
 	statusManager := NewPodStatusManager(n.client, updates)
 	go statusManager.Run()
 
+	//to avoid node register flood
+	waitTime := rand.Intn(n.updateFrequency)
+	time.Sleep(time.Duration(waitTime) * time.Second)
 	go wait.Until(n.syncNodeStatus, time.Duration(n.updateFrequency)*time.Second, wait.NeverStop)
 
 	for {
